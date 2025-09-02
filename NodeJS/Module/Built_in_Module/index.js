@@ -32,10 +32,18 @@ const fs = require("fs");
 //   }
 // });
 
-fs.unlink("demo2.txt", (err) => {
-  if (err) {
-    console.log(err);
+// fs.unlink("demo2.txt", (err) => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("Successfull");
+//   }
+// });
+
+fs.exists("demo2.txt", (result) => {
+  if (result) {
+    console.log("File exist.");
   } else {
-    console.log("Successfull");
+    console.log("Can not found the file");
   }
 });

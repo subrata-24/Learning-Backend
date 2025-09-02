@@ -40,10 +40,14 @@ const fs = require("fs");
 //   }
 // });
 
-fs.exists("demo2.txt", (result) => {
-  if (result) {
-    console.log("File exist.");
-  } else {
-    console.log("Can not found the file");
-  }
-});
+// fs.exists("demo2.txt", (result) => {
+//   if (result) {
+//     console.log("File exist.");
+//   } else {
+//     console.log("Can not found the file");
+//   }
+// });
+
+const res = fs.existsSync("demo2.txt");
+
+console.log(res);

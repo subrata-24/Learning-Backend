@@ -1,6 +1,14 @@
 const fs = require("fs");
 
-fs.writeFile("demo1.txt", "My name is subrata.", (err) => {
+// fs.writeFile("demo1.txt", "My name is subrata.", (err) => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("Successful");
+//   }
+// });
+
+fs.appendFile("demo1.txt", "My age is 25 years old", (err) => {
   if (err) {
     console.log(err);
   } else {

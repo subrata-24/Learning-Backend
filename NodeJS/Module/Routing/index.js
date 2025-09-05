@@ -2,30 +2,21 @@ const http = require("http");
 const fs = require("fs");
 
 const server = http.createServer((req, res) => {
+  const handleClientRequest = (statusCode, fileLocation) => {
+    fs.readFile(fileLocation, (err, data) => {
+      res.writeHead(statusCode, { "content-type": "text/html" });
+      res.write(data);
+      res.end();
+    });
+  };
   if (req.url === "/") {
-    fs.readFile("./View/Home.html", (err, data) => {
-      res.writeHead(200, { "content-type": "text/html" });
-      res.write(data);
-      res.end();
-    });
+    handleClientRequest(200, "./View/Home.html");
   } else if (req.url === "/about") {
-    fs.readFile("./View/About.html", (err, data) => {
-      res.writeHead(200, { "content-type": "text/html" });
-      res.write(data);
-      res.end();
-    });
+    handleClientRequest(200, "./View/About.html");
   } else if (req.url === "/contact") {
-    fs.readFile("./View/Contact.html", (err, data) => {
-      res.writeHead(200, { "content-type": "text/html" });
-      res.write(data);
-      res.end();
-    });
+    handleClientRequest(200, "./View/Contact.html");
   } else {
-    fs.readFile("./View/error.html", (err, data) => {
-      res.writeHead(200, { "content-type": "text/html" });
-      res.write(data);
-      res.end();
-    });
+    handleClientRequest(404, "./View/error.html");
   }
 });
 

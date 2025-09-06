@@ -2,23 +2,19 @@ const app = require("./app");
 const PORT = 3000;
 
 app.get("/", (req, res) => {
-  res.send("I am home page!!");
+  res.send("<h1>I am home page!!</h1>");
 });
 
-app.get("/about", (req, res) => {
-  res.send("I am abot page.");
+app.get("/register", (req, res) => {
+  res.send("<h1>I am register page!!</h1>");
 });
 
-app.post("/", (req, res) => {
-  console.log("Post something on home page");
+app.get("/login", (req, res) => {
+  res.send("<h1>I am login page!!</h1>");
 });
 
-app.put("/", (req, res) => {
-  console.log("Update on home page.");
-});
-
-app.delete("/", (req, res) => {
-  console.log("Delete something from home page.");
+app.use((req, res) => {
+  res.send("<h1>404!!The page can not be found.</h1>");
 });
 
 app.listen(PORT, () => {

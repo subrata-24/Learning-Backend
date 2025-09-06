@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h1>Register</h1>
+    
+    <!-- action="/register" → tells the browser to send the form data 
+    to the /register route on your server and POST means the form data is sent inside the request body (not visible in the URL).
+
+Safer for sending sensitive data like passwords.
+    
+    Matches app.post("/register", ...) in your backend.
+    
+    Without it (or if wrong), the data won’t reach the correct 
+    route. -->
+    <form action="/register" method="post">
+        <div>
+            <label for="fullname">Full Name</label>
+            <input type="text" name="fullname" id="fullname">
+        </div>
+        <div>
+            <label for="age">Age</label>
+            <input type="text" name="age" id="age">
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

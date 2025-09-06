@@ -2,19 +2,17 @@ const express = require("express");
 
 const app = express();
 
-app.get("/", (req, res) => {
-  /*
-    req.query contains all the query parameters sent in the URL
-    Example: URL => http://localhost:3000/?name=Subrata&id=24
-    Then req.query = { name: "Subrata", id: "24" }
-  */
-  const { name, id } = req.query; // Destructuring query parameters into variables
-
-  /*
-    Send an HTML response back to the client
-    The content is dynamically created using the query parameters
-    Example response: <h1>Student name is Subrata and id is 24</h1>
-  */
+/*
+  Route with dynamic URL parameters
+  URL pattern: /userName/:name/userId/:id
+  - :name and :id are route parameters (mandatory)
+  - They allow passing values directly in the URL path
+  Example URL: http://localhost:3000/userName/Subrata/userId/24
+*/
+app.get("/userName/:name/userId/:id", (req, res) => {
+  // Extract route parameters from req.params object
+  // req.params = { name: "Subrata", id: "24" } for the example URL
+  const { name, id } = req.params;
   res.send(`<h1>Student name is ${name} and id is ${id}</h1>`);
 });
 

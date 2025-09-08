@@ -1,19 +1,14 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-app.get("/register", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+app.get("/user/:id", (req, res, next) => {
+  const id = req.params.id;
+  if (/^[0-4]{3}$/.test(id)) res.send(`<h1>ID is ${req.params.id}</h1>`);
+  else next();
 });
 
-app.post("/register", (req, res) => {
-  const name = req.body.fullname;
-  const age = req.body.age;
-  res.send(`client name is ${name} and age is ${age}`);
+app.use((req, res) => {
+  res.status(404).send("<h1>404 Not Found</h1><p>Invalid route or ID</p>");
 });
 
 module.exports = app;

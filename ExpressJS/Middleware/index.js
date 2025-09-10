@@ -1,4 +1,5 @@
 const express = require("express");
+const chalk = require("chalk");
 const app = express();
 const PORT = 3000;
 
@@ -12,12 +13,16 @@ app.use(myMiddleware);
 
 // Routes
 app.get("/", (req, res) => {
-  console.log("I am home " + req.currentTime);
+  console.log(
+    chalk.green("🏠 Home route hit at: ") + chalk.yellow(req.currentTime)
+  );
   res.send(`<h2>I am home.</h2>`);
 });
 
 app.get("/about", (req, res) => {
-  console.log("I am about " + req.currentTime);
+  console.log(
+    chalk.blue("ℹ️ About route hit at: ") + chalk.yellow(req.currentTime)
+  );
   res.send(`<h2>I am about.</h2>`);
 });
 
@@ -44,6 +49,4 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
+console.log(chalk.bgGreen.black(`Server running at http://localhost:${PORT}`));

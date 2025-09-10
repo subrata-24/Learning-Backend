@@ -1,74 +1,18 @@
+// index.js
 const express = require("express");
-const { body, validationResult } = require("express-validator");
+const router = require("./routes/routes.users");
 const app = express();
 const PORT = 3000;
 
+// Add JSON parser (important for JSON request bodies)
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.status(200).send(`<h1>Validate registration information of user</h1>`);
 });
 
-app.post(
-  "/api/registration",
-  //Input vaidation
-  body("name")
-    .trim()
-    .notEmpty()
-    .withMessage("Name must not be empty")
-    .isLength({ min: 5 })
-    .withMessage("Name must be at least 5 character")
-    .isLength({ max: 15 })
-    .withMessage("Name must be at max 15 character"),
-  body("email")
-    .trim()
-    .notEmpty()
-    .withMessage("Email is missing")
-    .isEmail()
-    .withMessage("Not a valid email"),
-  body("password")
-    .trim()
-    .notEmpty()
-    .withMessage("Password must not be empty")
-    .isLength({ min: 8 })
-    .withMessage("Password must be at least 5 character")
-    .isLength({ max: 20 })
-    .withMessage("Password must be at max 20 character"),
-  body("dob")
-    .trim()
-    .notEmpty()
-    .withMessage("dob is missing")
-    .isISO8601()
-    .toDate()
-    .withMessage("Not a valid date"),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  },
-
-  (req, res) => {
-    try {
-      const { name, email, password, dob } = req.body;
-      const newUser = {
-        name,
-        email,
-        password,
-        dob,
-      };
-      return res.status(200).json({
-        message: "Working good.",
-        newUser,
-      });
-    } catch (error) {
-      return res.status(201).json({
-        message: error.message,
-      });
-    }
-  }
-);
+app.use("/api", router);
 
 app.listen(PORT, () => {
   console.log(`server is running at http://localhost:${PORT}`);

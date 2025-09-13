@@ -25,6 +25,10 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  rating: {
+    type: Number,
+    required: true,
+  },
   Description: {
     type: String,
     required: true,
@@ -47,6 +51,7 @@ app.post("/products", async (req, res) => {
       name: req.body.name,
       price: req.body.price,
       Description: req.body.Description,
+      rating: req.body.rating,
     });
 
     await newProduct.save(newProduct);
@@ -63,32 +68,28 @@ app.post("/products", async (req, res) => {
 
 app.get("/products", async (req, res) => {
   try {
-    // equal 2000
-    // const productsInfo = await products.find({ price: { $eq: 2000 } });
-
-    // not equal 2000
-    // const productsInfo = await products.find({ price: { $ne: 2000 } });
-
-    // greater than 500
-    // const productsInfo = await products.find({ price: { $gt: 500 } });
-
-    // greater equal 2000
-    // const productsInfo = await products.find({ price: { $gte: 2000 } });
-
-    // less than 2000
-    // const productsInfo = await products.find({ price: { $lt: 2000 } });
-
-    // less equal 2000
-    // const productsInfo = await products.find({ price: { $lte: 2000 } });
-
-    // shows the documents that present in this array
-    // const productsInfo = await products.find({ price: { $in: [300, 2000] } });
-
-    // shows the documents that is not present in this array
-    // const productsInfo = await products.find({ price: { $nin: [300, 2000] } });
-
     const price = req.query.price;
-    const productsInfo = await products.find({ price: { $lt: price } });
+    const rating = req.query.rating;
+
+    // all condition must be true
+    // const productsInfo = await products.find({
+    //   $and: [{ price: { $lt: price } }, { rating: { $gt: 4 } }],
+    // });
+
+    // at least one condition must be true
+    // const productsInfo = await products.find({
+    //   $or: [{ price: { $lt: price } }, { rating: { $gt: 4 } }],
+    // });
+
+    // all condition must be false
+    // const productsInfo = await products.find({
+    //   $nor: [{ price: { $lt: price } }, { rating: { $gt: 4 } }],
+    // });
+
+    // show all document where the query become false
+    const productsInfo = await products.find({
+      price: { $not: { $gt: price } },
+    });
 
     if (productsInfo) {
       res.status(200).send({

@@ -63,7 +63,33 @@ app.post("/products", async (req, res) => {
 
 app.get("/products", async (req, res) => {
   try {
-    const productsInfo = await products.find({}, { _id: 0, name: 1 });
+    // equal 2000
+    // const productsInfo = await products.find({ price: { $eq: 2000 } });
+
+    // not equal 2000
+    // const productsInfo = await products.find({ price: { $ne: 2000 } });
+
+    // greater than 500
+    // const productsInfo = await products.find({ price: { $gt: 500 } });
+
+    // greater equal 2000
+    // const productsInfo = await products.find({ price: { $gte: 2000 } });
+
+    // less than 2000
+    // const productsInfo = await products.find({ price: { $lt: 2000 } });
+
+    // less equal 2000
+    // const productsInfo = await products.find({ price: { $lte: 2000 } });
+
+    // shows the documents that present in this array
+    // const productsInfo = await products.find({ price: { $in: [300, 2000] } });
+
+    // shows the documents that is not present in this array
+    // const productsInfo = await products.find({ price: { $nin: [300, 2000] } });
+
+    const price = req.query.price;
+    const productsInfo = await products.find({ price: { $lt: price } });
+
     if (productsInfo) {
       res.status(200).send({
         success: true,

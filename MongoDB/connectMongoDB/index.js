@@ -43,32 +43,40 @@ app.get("/", (req, res) => {
 
 app.post("/products", async (req, res) => {
   try {
-    const productData = await products.insertMany([
-      {
-        name: "router",
-        price: 2000,
-        Description: "For internet",
-      },
-      {
-        name: "mobile",
-        price: 20000,
-        Description: "For time waste",
-      },
-      {
-        name: "laptop",
-        price: 40000,
-        Description: "For watch movie",
-      },
-    ]);
+    const newProduct = new products({
+      name: req.body.name,
+      price: req.body.price,
+      Description: req.body.Description,
+    });
 
+    await newProduct.save(newProduct);
     res.status(201).send({
-      productData,
+      message: "Product stored successfully",
+      data: newProduct,
     });
   } catch (error) {
     res.status(500).send({
       message: error.message,
     });
   }
+});
+
+app.get("/products", async (req, res) => {
+  try {
+    const productsInfo = await products.find();
+    if (productsInfo) {
+      res.status(200).send({
+        success: true,
+        message: "Found products",
+        data: productsInfo,
+      });
+    } else {
+      res.send(404).send({
+        success: false,
+        message: "Something went wrong",
+      });
+    }
+  } catch (error) {}
 });
 
 app.listen(PORT, async () => {

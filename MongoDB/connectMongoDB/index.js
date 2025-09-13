@@ -71,25 +71,15 @@ app.get("/products", async (req, res) => {
     const price = req.query.price;
     const rating = req.query.rating;
 
-    // all condition must be true
-    // const productsInfo = await products.find({
-    //   $and: [{ price: { $lt: price } }, { rating: { $gt: 4 } }],
-    // });
+    // Count number of documents that was found in result by query
+    // const productsInfo = await products.find().countDocuments();
 
-    // at least one condition must be true
-    // const productsInfo = await products.find({
-    //   $or: [{ price: { $lt: price } }, { rating: { $gt: 4 } }],
-    // });
+    // Sort based on defination.1 means ascending and -1 means descending
+    // sort based on first key,then second,then third...
+    // const productsInfo = await products.find().sort({ price: 1, rating: -1 });
 
-    // all condition must be false
-    // const productsInfo = await products.find({
-    //   $nor: [{ price: { $lt: price } }, { rating: { $gt: 4 } }],
-    // });
-
-    // show all document where the query become false
-    const productsInfo = await products.find({
-      price: { $not: { $gt: price } },
-    });
+    // Select: Define which prop have to shows and which prop have to hide
+    const productsInfo = await products.find().select({ price: 1, rating: 1 });
 
     if (productsInfo) {
       res.status(200).send({

@@ -79,6 +79,25 @@ app.get("/products", async (req, res) => {
   } catch (error) {}
 });
 
+app.get("/products/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const productsInfo = await products.find({ _id: id });
+    if (productsInfo) {
+      res.status(200).send({
+        success: true,
+        message: "Found products",
+        data: productsInfo,
+      });
+    } else {
+      res.send(404).send({
+        success: false,
+        message: "Something went wrong",
+      });
+    }
+  } catch (error) {}
+});
+
 app.listen(PORT, async () => {
   console.log(`server is running at http://localhost:${PORT}`);
   await connectDB();

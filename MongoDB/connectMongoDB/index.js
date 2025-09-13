@@ -63,7 +63,7 @@ app.post("/products", async (req, res) => {
 
 app.get("/products", async (req, res) => {
   try {
-    const productsInfo = await products.find();
+    const productsInfo = await products.find({}, { _id: 0, name: 1 });
     if (productsInfo) {
       res.status(200).send({
         success: true,
@@ -86,7 +86,7 @@ app.get("/products/:id", async (req, res) => {
     if (productsInfo) {
       res.status(200).send({
         success: true,
-        message: "Found products",
+        message: "Found product",
         data: productsInfo,
       });
     } else {

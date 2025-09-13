@@ -43,19 +43,29 @@ app.get("/", (req, res) => {
 
 app.post("/products", async (req, res) => {
   try {
-    const newProduct = new products({
-      name: req.body.name,
-      price: req.body.price,
-      Description: req.body.Description,
-    });
-
-    await newProduct.save();
+    const productData = await products.insertMany([
+      {
+        name: "router",
+        price: 2000,
+        Description: "For internet",
+      },
+      {
+        name: "mobile",
+        price: 20000,
+        Description: "For time waste",
+      },
+      {
+        name: "laptop",
+        price: 40000,
+        Description: "For watch movie",
+      },
+    ]);
 
     res.status(201).send({
-      newProduct,
+      productData,
     });
   } catch (error) {
-    res.status(404).send({
+    res.status(500).send({
       message: error.message,
     });
   }

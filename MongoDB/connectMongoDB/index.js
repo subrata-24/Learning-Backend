@@ -19,11 +19,26 @@ const connectDB = async () => {
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Name can not be empty"],
+    minlength: [3, "Name must be at least 3 character"],
+    maxlength: [20, "Name can not grater than 20 character"],
+    // lowercase: true,//make all the character in lowercase
+    // uppercase: true,//make all the character in uppercase
+    trim: true, //If any blank space at the begining and at the end,it will remove that
+    enum: {
+      values: ["apple", "samsung", "walton"],
+      message: "{VALUE} is not supported",
+    }, //name must be among these string
   },
   price: {
     type: Number,
     required: true,
+    min: [20, "Price must be at least 20"],
+    max: [300, "Price can not be greater than 300"],
+  },
+  email: {
+    type: String,
+    unique: [true, "This address is already taken"],
   },
   rating: {
     type: Number,

@@ -66,25 +66,20 @@ app.post("/products", async (req, res) => {
   }
 });
 
-app.get("/products", async (req, res) => {
+app.delete("/products", async (req, res) => {
   try {
-    const price = req.query.price;
-    const rating = req.query.rating;
+    // Delete by id
+    // const id = req.query.id;
+    // const productsInfo = await products.deleteOne({ _id: id });
 
-    // Count number of documents that was found in result by query
-    // const productsInfo = await products.find().countDocuments();
-
-    // Sort based on defination.1 means ascending and -1 means descending
-    // sort based on first key,then second,then third...
-    // const productsInfo = await products.find().sort({ price: 1, rating: -1 });
-
-    // Select: Define which prop have to shows and which prop have to hide
-    const productsInfo = await products.find().select({ price: 1, rating: 1 });
+    // Found by id(get the information) and delete the product
+    const id = req.query.id;
+    const productsInfo = await products.findByIdAndDelete({ _id: id });
 
     if (productsInfo) {
       res.status(200).send({
         success: true,
-        message: "Found products",
+        message: "Deleted Successfullly",
         data: productsInfo,
       });
     } else {
@@ -94,6 +89,44 @@ app.get("/products", async (req, res) => {
       });
     }
   } catch (error) {}
+});
+
+app.put("/products/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // If do not read the  info then use updateOne(),updateMany
+    // If want to read the updated info then use {new:true}.By default it is false
+    const productsInfo = await products.findByIdAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          name: req.body.name,
+          price: req.body.price,
+          Description: req.body.Description,
+          rating: req.body.rating,
+        },
+      },
+      { new: true }
+    );
+
+    if (productsInfo) {
+      res.status(200).send({
+        success: true,
+        message: "Updated Successfullly",
+        data: productsInfo,
+      });
+    } else {
+      res.send(404).send({
+        success: false,
+        message: "Something went wrong",
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
 });
 
 app.get("/products/:id", async (req, res) => {

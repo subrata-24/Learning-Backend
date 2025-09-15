@@ -36,6 +36,16 @@ const productSchema = new mongoose.Schema({
     min: [20, "Price must be at least 20"],
     max: [300, "Price can not be greater than 300"],
   },
+  phone: {
+    type: String,
+    required: [true, "Phone number is required"],
+    validate: {
+      validator: function (v) {
+        return /\d{3}-\d{3}-\d{4}/.test(v);
+      },
+      message: (props) => `${props.value} is not a valid phone number`,
+    },
+  },
   email: {
     type: String,
     unique: [true, "This address is already taken"],
@@ -67,6 +77,7 @@ app.post("/products", async (req, res) => {
       price: req.body.price,
       Description: req.body.Description,
       rating: req.body.rating,
+      phone: req.body.phone,
     });
 
     await newProduct.save(newProduct);
